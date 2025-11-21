@@ -246,4 +246,3 @@ SELECT * FROM EMP_RESPALDO;
 
 ---
 
-*Archivo preparado para uso en GitHub en formato Markdown, basado fielmente en tus apuntes originales con explicaciones complementarias.*
