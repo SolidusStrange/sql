@@ -11,6 +11,10 @@ where gender = 'M';
 
 ```
 
+1. Para seleccionar información para mostrar usamos `SELECT`, elegimos los atributos que queremos mostrar de la tabla. `SELECT` siempre debe venir acompañado de un `FROM` ya que es de donde provienen los datos. El `WHERE` nos sirve de filtro para depurar la información que nos pidió.
+
+---
+
 > [!Pregunta 2] 
 >Show first name and last name of patients who does not have allergies. (null)
 
@@ -22,6 +26,8 @@ from patients
 where allergies IS NULL; -- Verifica si es nulo
 ```
 
+1. Que no tenga alergias significa que no tiene valor en ese atributo, por lo tanto está nulo. Para eso, usamos un filtro que verifique si es nulo o no. `WHERE allergies IS NULL`
+---
 > [!Pregunta 3] 
 >Show first name of patients that start with the letter 'C'
 
@@ -32,6 +38,11 @@ from patients
 where first_name like 'C%'; -- LIKE 'a%' que empieza con '%a' termina con
 ```
 
+1. Para mostrar si empieza con una letra o termina con una, usamos `LIKE` para especificar un patrón en una columna. Esta puede tener varios comodines pero para este caso usamos `%` que representa 0, 1 o múltiples caracteres, lo que quiere decir es que si lo dejamos al final y especificamos un caracter antes, significa que no importa lo que esté después, lo importante es que empiece con ese.
+2. Un ejemplo, sería `'Car%'` que en una lista de nombres, nos podría traer Carmen, Carlos, Carla, etc.
+3. Si fuera al revés `'%el'` diría que debe terminar con `'el'` y lo demás no importa, por lo tanto, podría traer Daniel, Gabriel, etc. 
+
+---
 > [!Pregunta 4] 
 >Show first name and last name of patients that weight within the range of 100 to 120 (inclusive)
 
@@ -42,6 +53,8 @@ from patients
 where weight between 100 and 120;
 ```
 
+1. Para mostrar dentro de un rango podemos usar varias formas, una sería que evalué el atributo mayor a un rango y menor a otro. O simplemente, podemos usar `BETWEEN` dentro del `WHERE` para que busque un valor entre los dos rangos.
+
 > [!Pregunta 5] 
 >Update the patients table for the allergies column. If the patient's allergies is null then replace it with 'NKA'
 
@@ -51,21 +64,25 @@ set allergies = 'NKA'
 where allergies is Null;	
 ```
 
+1. Lo mismo anterior, la diferencias es que vamos a cambiar un valor de un atributo, no solo filtrar esos atributos, por lo tanto, para realizar cambios en una tabla, usamos `UPDATE` y para cambiar un atributo a algo distinto usamos `SET`.
+2. Usamos un `WHERE` para solo cambiar específicamente los cuáles son nulos
+
 > [!Pregunta 6] 
 Show first name and last name concatinated into one column to show their full name.
 
-v1
 ```SQL
 select 
 first_name ||' '|| last_name AS full_name 
 FROM patients
 ```
-v2
+
 ```sql
 SELECT
   CONCAT(first_name, ' ', last_name) AS full_name
 FROM patients;
 ```
+
+1. Para realizar concatenaciones, podemos usar la función `CONCAT()` o usar el operador estándar `||`
 
 > [!Pregunta 7] 
 Show first name, last name, and the **full** province name of each patient.
@@ -80,6 +97,11 @@ FROM patients
   JOIN province_names ON province_names.province_id = patients.province_id;
 ```
 
+1. Cuando queremos unir información de dos tablas que tienen un atributo en común usamos `JOIN`.
+2. Para utilizarlo, debemos ingresarlo después del `FROM` ya que los atributos que establecimos anteriormente provienen de esta tabla y va a ser de la que empezaremos a unir.
+3. Luego de eso usamos `JOIN` → la tabla que queremos unir → `ON` → atributo = atributo (igual en ambas tablas)
+4. Estas van con un "alias" que indica el nombre de la tabla de donde viene, puede ser cualquiera mientras no sea igual al otro. Por ejemplo: `doctor_names.doctor_id` o `dn.doctor_id`
+
 > [!Pregunta 8] 
 Show how many patients have a birth_date with 2010 as the birth year.
 
@@ -89,8 +111,10 @@ FROM patients
 WHERE YEAR(birth_date) = 2010;
 ```
 
+1. La función `YEAR()` nos funciona para extraer el año de una fecha. 
+
 > [!Pregunta 9] 
-Show how many patients have a birth_date with 2010 as the birth year.
+Show the tallest patient.
 
 ```sql 
 SELECT
@@ -99,6 +123,8 @@ SELECT
   MAX(height) AS height
 FROM patients;
 ```
+
+1. La función `MAX()` entrega el valor más alto del atributo en comparación a todos. 
 
 > [!Pregunta 10] 
 Show all columns for patients who have one of the following patient_ids:  
@@ -111,6 +137,8 @@ WHERE
   patient_id IN (1, 45, 534, 879, 1000);
 ```
 
+1. Similar a otros lenguajes `IN` se puede usar para ver si está dentro de la lista de valores. `IN` `(1, 2 ,3 ,4 ,5)`
+
 > [!Pregunta 11] 
 Show the total number of admissions
 
@@ -118,6 +146,8 @@ Show the total number of admissions
 SELECT COUNT(*) AS total_admissions
 FROM admissions;
 ```
+
+1. `COUNT()` cuenta el total de filas de la columna, si usamos `*` contará todas las filas, si queremos que agrupe por un atributo en particular, debemos usar `GROUP BY`
 
 > [!Pregunta 12] 
 Show all the columns from admissions where the patient was admitted and discharged on the same day.
@@ -178,3 +208,6 @@ WHERE
   city = 'Hamilton'
   and allergies is not null
 ```
+
+[^1]: assdas
+	
