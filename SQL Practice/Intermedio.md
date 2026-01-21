@@ -4,11 +4,13 @@
 
 ```sql
 SELECT 
-	distinct year(birth_date) as birth_date
+	distinct year(birth_date) as birth_year
 FROM patients
-order by year(birth_date);
+order by year(birth_date); -- O podemos usar simplemente el alias birth_year
 ```
 
+1. Para mostrar un valores únicos de fechas de nacimiento, usamos `SELECT DISTINCT` y para ordenarlos usamos `ORDER BY` se acompaña del atributo que queremos que ordene. 
+2. Por defecto es ascendente. Si quisiéramos que fuera descendente, pondríamos `ORDER BY birth_year desc`.
 
 > [!Pregunta 2] 
 >Show unique first names from the patients table which only occurs once in the list. For example, if two or more people are named 'John' in the first_name column then don't include their name in the output list. If only 1 person is named 'Leo' then include them in the output. 
@@ -19,6 +21,8 @@ FROM patients
 GROUP BY first_name
 HAVING COUNT(first_name) = 1
 ```
+
+1. Para mostrar nombres únicos de la tabla que solo ocurren una vez en la lista usamos un `GROUP BY` que agrupa todos los valores únicos, y después con `HAVING` evaluamos que el conteo de estos sea igual a 1.
 
 > [!Pregunta 3] 
 >Show patient_id and first_name from patients where their first_name start and ends with 's' and is at least 6 characters long.
