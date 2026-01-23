@@ -35,6 +35,18 @@ from patients
 where first_name like "s%____%s";
 ```
 
+1. Para filtrar con que empiece y termine con un carácter, debemos usar `WHERE` y `LIKE` y para que empiece y termine usamos `%`.
+2. Si queremos que empiece con s, usamos `s%`, si queremos que termine `s%`, para que sea máximo 6 caracteres usamos el comodín `_` que representa cualquier carácter. 
+3. Por lo tanto, si queremos por ejemplo un nombre como "Jaime", necesitaríamos hacer que empiece con J (`s%`), termine con E `(%e`) y tenga 3 caracteres entre medio de esos dos, por lo tanto `___`. Quedando como resultado: `%J___%e`
+
+| %   | Represents zero or more characters                         |
+| --- | ---------------------------------------------------------- |
+| _   | Represents a single character                              |
+| []  | Represents any single character within the brackets *      |
+| ^   | Represents any character not in the brackets               |
+| -   | Represents any single character within the specified range |
+| {}  | Represents any escaped character                           |
+
 > [!Pregunta 4] 
 >Show patient_id, first_name, last_name from patients whos diagnosis is 'Dementia'. Primary diagnosis is stored in the admissions table.
 >
@@ -49,16 +61,24 @@ FROM patients
 WHERE diagnosis = 'Dementia';
 ```
 
+1. Acá nos piden filtrar por información que no está en esta tabla, por lo tanto debemos unirla con otra mediante un `JOIN` y buscando un atributo que se comparta en ambos, normalmente es el ID.
+2. Usamos un alias o el nombre de la tabla para reconocer a cuál tabla pertenece, podemos usar cualquiera: `alias.patient_id` en el cual significaría que existe una tabla llamada alias donde hay un atributo llamado `patient_id`
+3. Para unir, nos ubicamos debajo del `FROM` (ya que estamos indicando que hay atributos seleccionados que provienen de una tabla que se unirá a la otra) y usamos la tabla que queremos unir más un `ON` para después indicar cuáles son los atributos que son iguales en ambos siempre indicando con un alias donde provienen.
+
 > [!Pregunta 5] 
 >Display every patient's first_name. Order the list by the length of each name and then by alphabetically.
 
 ``` sql
 SELECT first_name
 FROM patients
-order by
+ORDER BY
   len(first_name),
-  first_name;
+  first_name
 ```
+
+1. Nos piden que ordenemos la lista por el largo de cada nombre y de forma alfabética.
+2. Para ordenar una lista, usamos `ORDER BY`
+3. Podemos usar múltiples condiciones que se harán en el orden que establezcamos, en este caso, usaremos LEN() para evaluar el largo, y después el atributo que queramos que ordene de forma alfabética
 
 > [!Pregunta 6] 
 >Show the total amount of male patients and the total amount of female patients in the patients table. Display the two results in the same row.
@@ -75,6 +95,8 @@ SELECT
   (SELECT count(*) FROM patients WHERE gender='M') AS male_count, 
   (SELECT count(*) FROM patients WHERE gender='F') AS female_count;
 ```
+
+1. Para poder calcular el monto total de un atributo, debemos hacer un SUM() y podemos realizar la condición dentro. Requiere mostrar ambos en la misma fila, por lo que simplemente debemos hacer un `SELECT` a los dos `SUM()`
 
 > [!Pregunta 7] 
 >Show first and last name, allergies from patients which have allergies to either 'Penicillin' or 'Morphine'. Show results ordered ascending by allergies then by first_name then by last_name.
