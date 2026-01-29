@@ -115,6 +115,10 @@ ORDER BY
   last_name;
 ```
 
+1. Nos pide mostrar información filtrada que no ha sido procesada, por lo tanto, usamos `WHERE`
+2. Si nos pide que sea una u otra, no necesariamente una en específico. Usamos `IN` que nos sirve para evaluar múltiples condiciones `OR`
+3. Después ordenamos por lo que nos pide. Para establecer el orden sea usa una `,` entre cada orden.
+
 > [!Pregunta 8] 
 >Show patient_id, diagnosis from admissions. Find patients admitted multiple times for the same diagnosis.
 
@@ -129,6 +133,9 @@ GROUP BY
 HAVING COUNT(*) > 1;
 ```
 
+1. Nos piden agrupar información y filtrarla por aquellos que han tenido más de un diagnóstico. Por lo tanto, usamos `HAVING` no `WHERE`, ya que estamos trabajando con datos agrupados. 
+2. `WHERE` para filas individuales, mientras que `HAVING` para filtrar grupos / COUNT / SUM / AVG
+
 > [!Pregunta 9] 
 >Show the city and the total number of patients in the city. Order from most to least patients and then by city name ascending.
 
@@ -141,6 +148,9 @@ GROUP BY city
 ORDER BY num_patients DESC, city asc;
 ```
 
+1. Nos piden un atributo y el total de un dato, en base a ese primer atributo, por lo tanto, necesitamos usar un `COUNT(*)`
+2. Cuando contamos, necesitamos agrupar la información, por lo tanto, siempre lleva un `GROUP BY`
+
 > [!Pregunta 10] 
 >Show first name, last name and role of every person that is either patient or doctor.  The roles are either "Patient" or "Doctor"
 
@@ -149,6 +159,8 @@ SELECT first_name, last_name, 'Patient' as role FROM patients
     union all
 select first_name, last_name, 'Doctor' from doctors;
 ```
+
+1. Nos piden mostrar información que tienen atributos en común pero uno de ellos es distinto por cada tabla. Por lo tanto, necesitamos usar un `UNION`, la diferencia es que usaremos `UNION ALL`, ya que el primero, remueve los duplicados, mientras que el segundo, incluye todos los valores duplicados.
 
 > [!Pregunta 11] 
 >Show all allergies ordered by popularity. Remove NULL values from query.
@@ -164,6 +176,9 @@ GROUP BY allergies
 ORDER BY total_diagnosis DESC
 ```
 
+1. Nos piden mostrar un atributo y ordenarlo por popularidad, en el contexto del ejercicio y la tabla, el más popular debería ser el que tenga más duplicados, por lo tanto, contamos por ese atributo y agrupamos por el mismo. 
+2. En cuanto a remover los valores nulos, debemos filtrar por los que no son. Usamos `WHERE` y `IS NOT`. La diferencia de `IS` con `=` es que los `IS` a diferencia de un operador de comparación, retorna `TRUE` o `FALSE` de la expresión a diferencia de `UNKNOWN` del operador de comparación.
+
 > [!Pregunta 12] 
 >  Show all patient's first_name, last_name, and birth_date who were born in the 1970s decade. Sort the list starting from the earliest birth_date.
 
@@ -177,6 +192,9 @@ WHERE
   YEAR(birth_date) BETWEEN 1970 AND 1979
 ORDER BY birth_date ASC;
 ```
+
+1. Mostrar la información de todos los pacientes quienes nacen en una década en específico, se puede realizar primero extrayendo el año de la fecha y después comparándola dentro de un rango de años. 
+2. Si queremos ordenarla de la fecha más actual, simplemente hacemos un `ORDER BY` ascendente ya que el valor más grande es el más actual.
 
 > [!Pregunta 13] 
 > We want to display each patient's full name in a single column. Their last_name in all upper letters must appear first, then first_name in all lower case letters. Separate the last_name and first_name with a comma. Order the list by the first_name in decending order  EX: SMITH,jane
@@ -195,6 +213,9 @@ FROM patients
 ORDER BY first_name DESC;
 ```
 
+1. Para concatenar podemos usar la función CONCAT o simplemente `|| ||`.
+2. Para mayúsculas usamos `UPPER` y para minúsculas `LOWER` 
+
 > [!Pregunta 14] 
 > Show the province_id(s), sum of height; where the total sum of its patient's height is greater than or equal to 7,000.
 
@@ -207,6 +228,8 @@ GROUP BY province_id
 HAVING sum_height >= 7000
 ```
 
+1. Nos piden mostrar un atributo, y la suma de otro, además, esa suma debe estar filtrada. Entonces, lo importante es que entendamos que al hacer una suma, necesitamos siempre que los datos se agrupen, una vez estos estén agrupados, para poder trabajar sobre datos agregados, siempre debemos usar `HAVING`. Por lo tanto, la condición de filtro se la agregaremos a `HAVING` en vez de `WHERE`
+
 > [!Pregunta 15] 
 > Show the difference between the largest weight and smallest weight for patients with the last name 'Maroni'
 
@@ -216,6 +239,8 @@ SELECT
 FROM patients
 WHERE last_name = 'Maroni';
 ```
+
+1. Primero una diferencia es un resta de dos números, el valor más grande siempre será el máximo de una columna de datos, y el más pequeño el mínimo. Por lo tanto, en el `SELECT` podemos añadir la diferencia como muestra
 
 > [!Pregunta 16] 
 > Show all of the days of the month (1-31) and how many admission_dates occurred on that day. Sort by the day with most admissions to least admissions.
