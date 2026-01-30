@@ -254,6 +254,9 @@ GROUP BY day_number
 ORDER BY number_of_admissions DESC
 ```
 
+1. Para mostrar los días del mes se utiliza la función `DAY()`
+2. Para contar cuantos, se utiliza `COUNT()` y se agrupa por el día
+
 > [!Pregunta 17] 
 > Show all columns for patient_id 542's most recent admission_date.
 
@@ -265,6 +268,8 @@ GROUP BY patient_id
 HAVING
   admission_date = MAX(admission_date);
 ```
+
+1. Nos piden mostrar las columnas del ID de un paciente y en base a la más reciente fecha de admisión. Para eso, filtramos con `WHERE` para obtener los que tienen el ID. Y como ya está filtrado, los datos fueron agregados, necesitamos utilizar `HAVING` y `GROUP BY`
 
 > [!Pregunta 18] 
 > Show patient_id, attending_doctor_id, and diagnosis for admissions that match one of the two criteria: 
@@ -298,6 +303,10 @@ WHERE
     attending_doctor_id LIKE '%2%'
     AND len(patient_id) = 3
 ```
+
+1. Piden dos criterios:
+	1. Uno que el numero sea impar por lo tanto utilizamos módulo, y el otro que sea o 1, 5 o 19. Por lo tanto, primero tienen que cumplirse ambas condiciones, así que usamos `AND`, luego tiene que evaluar en una lista de `OR` por lo tanto usamos `IN`.
+	2. Nos pide que debe o ser una opción o la otra, o sea que al menos cumpla uno, por lo tanto usamos `OR`. Con eso, nos piden que contenga un 2 y que además el largo sea de 3 caracteres. Por lo tanto para que contenga un 2 usamos `LIKE` y el comodín %, o sea que dentro del texto o al principio o al final, tenga un 2 (`%2%`). Para evaluar el largo usamos `LEN()`
 
 > [!Pregunta 19] 
 >Show first_name, last_name, and the total number of admissions attended for each doctor.  Every admission has been attended by a doctor.
