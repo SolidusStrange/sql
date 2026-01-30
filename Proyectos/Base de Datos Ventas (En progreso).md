@@ -1,0 +1,1 @@
+- Tratar de replicar la `query` que se usa para obtener información, indicando en los casos que esté mal ingresada la información para avisar a recepción.

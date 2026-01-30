@@ -341,6 +341,8 @@ where
 group by p.doctor_id;
 ```
 
+1. Nos piden atributos de una tabla y un conteo de una segunda. Para eso, necesitamos unir las tablas con `JOIN`. Para eso definimos cuál es el atributo en común de ambos.
+
 > [!Pregunta  20] 
 >For each doctor, display their id, full name, and the first and last admission date they attended.
 
@@ -354,6 +356,9 @@ FROM doctors
 join admissions on doctors.doctor_id = admissions.attending_doctor_id
 group by doctor_id;
 ```
+
+1. Para nombres completos usamos concatenación, podemos usar `|| ||` o `CONCAT`.
+2. Para el primero, usamos `MIN` para calcular la fecha más baja. `MAX` para la fecha más actual.
 
 > [!Pregunta  21] 
 >Display the total amount of patients for each province. Order by descending.
@@ -378,6 +383,10 @@ group by pr.province_id
 order by patient_count desc;
 ```
 
+1. Nos piden mostrar el total de pacientes por cada provincia. La tabla pacientes, no posee el nombre de las provincias, está en otra tabla, por lo tanto debemos unir por el atributo en común.
+2. Luego de eso, nos piden ordenar en base a cada provincia, por lo tanto agrupamos por ese atributo.
+3. Después, simplemente hacemos un `ORDER BY` en `DESC`.
+
 > [!Pregunta  22] 
 >For every admission, display the patient's full name, their admission diagnosis, and their doctor's full name who diagnosed their problem.
 
@@ -401,8 +410,10 @@ FROM patients
   JOIN doctors ON doctors.doctor_id = admissions.attending_doctor_id;
 ```
 
+1. Acá nos piden información de tres tablas distintas, por lo tanto, debemos unir las tres tablas. Similar a con dos pero añadiendo una nueva línea que genera la unión de atributos.
+
 > [!Pregunta  22] 
->display the first name, last name and number of duplicate patients based on their first name and last name.  Ex: A patient with an identical name can be considered a duplicate.
+>Display the first name, last name and number of duplicate patients based on their first name and last name.  Ex: A patient with an identical name can be considered a duplicate.
   
 ``` sql
 select
@@ -421,6 +432,8 @@ having count(*) > 1
 |`WHERE`|Filtra **filas individuales**|
 |`HAVING`|Filtra **grupos agregados**|
 *-`COUNT()` **solo puede ir en `HAVING` o `SELECT`**, nunca en `WHERE`.
+
+1. Acá lo importante es entender que nos están pidiendo los duplicados basados en una condición conjunta. Para poder calcular si algo está duplicado, necesitamos primero evaluarlo una vez están agrupados los datos, ya que nos mostrará la cantidad de veces que aparecen. Entonces, recién ahí, usamos un filtro, entonces por definición se nos indica que si queremos filtrar por filas ya calculadas, debemos usar siempre `HAVING`. 
 
 > [!Pregunta  23] 
 >Display patient's full name,  
@@ -443,6 +456,9 @@ END AS 'gender_type'
 from patients  
 ```
 
+1. Nos piden que redondeemos, por lo que usamos `ROUND()` 
+2. Después nos piden evaluar que el genero no esté abreviado, para eso debemos hacer un CASE que evalúe cada género, la condición es que sea M entonces lo cambia a MALE, si no se cumplen las condiciones del `CASE` avanza al `ELSE`.  END AS es el nombre que tendrá la columna.
+
 > [!Pregunta  24] 
 >Show patient_id, first_name, last_name from patients whose does not have any records in the admissions table. (Their patient_id does not exist in any admissions.patient_id rows.
 
@@ -455,6 +471,9 @@ from patients
   left join admissions on patients.patient_id = admissions.patient_id
 where admissions.patient_id is NULL
 ```
+
+1. Acá nos piden información donde la primera tabla busca una atributo que existe en la otra pero que no siempre está, por lo que  cuando no esté será null. Entonces como condición parte de eso se nos pide que solo muestre esos NULL
+2. Para lo primero, usamos `LEFT JOIN` que mostrará las coincidencias y los que no los rellenará con `NULL`, entonces aquí mostrará los que coinciden y los nulos, para sólo mostrar nulos usamos `WHERE` e `IS`porque evaluamos algo nulo y no un valor como para usar un operador comparativo como `==`
 
 > [!Pregunta  25] 
 >Display a single row with max_visits, min_visits, average_visits where the maximum, minimum and average number of admissions per day is calculated. Average is rounded to 2 decimal places.
@@ -470,6 +489,8 @@ from (
   group by admission_date
   )
 ```
+
+1. Acá nos pide algo bastante más importante: trabajar sobre una consulta, como si estuviéramos encadenando consultas. El por qué? Simplemente porque nos pide evaluar el máximo y el mínimo de un valor ya contado, algo que no se puede hacer en una sola consulta. Por lo mismo, necesitamos generar ese conteo, y que el `FROM` traiga ese resultado como base para evaluar. 
 
 > [!Pregunta  26] 
 >Display every patient that has at least one admission and show their most recent admission along with the patient and doctor's full name.
@@ -489,3 +510,5 @@ WHERE a.admission_date = (
 );
 ```
 
+1. Necesitamos extraer información de 3 tablas distintas, por lo que necesitaremos hacer uso de dos `JOIN`.
+2. Luego, nos pide que mostremos su más reciente admisión. Como usaremos `MAX()` y mostraremos información en base a ese resultado, necesitamos hacer dos consultas, teniendo `MAX()` como la consulta interna en la que se basarán todos los demás datos.
